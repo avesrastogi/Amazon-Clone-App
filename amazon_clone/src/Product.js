@@ -1,25 +1,53 @@
 import React from 'react'
 import styled from 'styled-components'
+import { db } from './firebase'
 
-function Product() {
+function Product({ title, price, rating, image, id }) {
+
+    const addToCart = () => {
+        const cartItem = db.collection("cartItems").doc(id);
+        cartItem.get()
+        .then((doc) => {
+            if(doc.exists) {
+                cartItem.update({
+                    quantity: doc.data().quantity + 1
+                })
+            }
+            else {
+                db.collection("cartItems").doc(id).set({
+                    name: title,
+                    image: image,
+                    price: price,
+                    quantity: 1
+                })
+            }
+        })
+    }
+
     return (
         <Container>
             <Title>
-                Ipad Pro
+                { title }
             </Title>
 
             <Price>
-                $1449
+                { price }
             </Price>
 
             <Rating>
-                ⭐⭐⭐⭐⭐
+                {
+                    Array(rating)
+                    .fill()
+                    .map(rating => <p>⭐</p>)
+                }
             </Rating>
 
-            <Image src="https://images-na.ssl-images-amazon.com/images/I/81Dd5ZGiUzL._SL1500_.jpg"/>
+            <Image src={ image }/>
 
             <ActionSection>
-                <AddToCartButton>
+                <AddToCartButton
+                    onClick={addToCart}
+                >
                     Add to Cart
                 </AddToCartButton>
             </ActionSection>
