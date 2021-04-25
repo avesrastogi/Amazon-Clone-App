@@ -7,7 +7,19 @@ import {
     Link
 } from "react-router-dom"
 
-const Header = () => {
+function Header({ cartItems, user, signOut }) {
+
+    const getCount = () => {
+        let count = 0;
+        // Loop through all cart items
+        cartItems.forEach((item) => {
+            // add the quantity of the cart item to total
+            count += item.product.quantity;
+        })
+
+        return count;
+    }
+
     return (
         <Container>
             <HeaderLogo>
@@ -34,8 +46,8 @@ const Header = () => {
 
             <HeaderNavItems>
 
-                <HeaderOption>
-                    <OptionLineOne>Hello, Avni</OptionLineOne>
+                <HeaderOption onClick={signOut}>
+                    <OptionLineOne>Hello, {user.name}</OptionLineOne>
                     <OptionLineTwo>Account & Lists</OptionLineTwo>
                 </HeaderOption>
 
@@ -47,7 +59,7 @@ const Header = () => {
                 <HeaderOptionCart>
                     <Link to="/cart">
                         <ShoppingBasketIcon />
-                        <CartCount>5</CartCount>
+                        <CartCount>{getCount()}</CartCount>
                     </Link>
                 </HeaderOptionCart>
 
@@ -73,17 +85,21 @@ const HeaderLogo = styled.div`
         margin-left: 11px;
     }
 `
-const HeaderOptionAddress = styled.div`
-    padding-left: 9px; 
-    display: flex;
-    align-items: center;    
-`
-const OptionLineOne = styled.div`
 
+const HeaderOptionAddress = styled.div`
+    padding-left: 9px;
+    display: flex;
+    align-items: center;
+    
 `
+
+const OptionLineOne = styled.div`
+`
+
 const OptionLineTwo = styled.div`
     font-weight: 700;
 `
+
 const HeaderSearch = styled.div`
     display: flex;
     flex-grow: 1;
@@ -97,13 +113,15 @@ const HeaderSearch = styled.div`
     }
 `
 
+
 const HeaderSearchInput = styled.input`
     flex-grow: 1;
-    broder: 0;
+    border: 0;
     :focus {
         outline: none;
     }
 `
+
 const HeaderSearchIconContainer = styled.div`
     background-color: #febd69;
     width: 45px;
@@ -111,16 +129,20 @@ const HeaderSearchIconContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
+    
 `
+
 const HeaderNavItems = styled.div`
     display: flex;
+    
 `
 
 const HeaderOption = styled.div`
+    // TRouBLe
     padding: 10px 9px 10px 9px;
     cursor: pointer;
 `
+
 const HeaderOptionCart = styled.div`
     display: flex;
     a {
@@ -131,6 +153,7 @@ const HeaderOptionCart = styled.div`
         text-decoration: none;
     }
 `
+
 const CartCount = styled.div`
     padding-left: 4px;
     font-weight: 700;

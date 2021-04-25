@@ -31,7 +31,7 @@ function Product({ title, price, rating, image, id }) {
             </Title>
 
             <Price>
-                { price }
+                ${ price }
             </Price>
 
             <Rating>
